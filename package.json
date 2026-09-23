@@ -36,6 +36,7 @@
       "target": [
         "dir"
       ],
+      "identity": "Apple Development: Riaz Mohamed (9RR5CHB7X5)",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "timestamp": null,

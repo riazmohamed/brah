@@ -39,4 +39,5 @@ Electron desktop voice assistant that uses the OpenAI Realtime API to listen, vi
 ## Build constraints
 
 - `@nut-tree-fork/**` must stay in `asarUnpack` (native addon, can't run from asar).
-- macOS build is the `dir` target with hardened runtime + the entitlements in `build/`. Code signing is auto-discovered from the keychain / `CSC_*` env vars; with no cert it falls back to ad-hoc/unsigned.
+- macOS build is the `dir` target with hardened runtime + the entitlements in `build/`. Signing is pinned via `build.mac.identity` in `package.json` to `Apple Development: Riaz Mohamed (9RR5CHB7X5)` (SHA-1 `30B0A8F4…`). Without the pin, electron-builder auto-picks another team's cert (`Apple Distribution: The Padel Alliance Limited`), which changes the app's signature and can reset macOS mic/screen-recording grants. `CSC_*` env vars still override it.
+- `codesign` fails with "ambiguous" if the keychain holds two certs with the same name (electron-builder signs by name, not hash, so `-c.mac.identity=<hash>` does not help). Fix by deleting the duplicate in the keychain. On 2026-09-24 the older duplicate `FFABD3E1…` was removed; its PEM is backed up in `~/Documents/cert-backups/`.
